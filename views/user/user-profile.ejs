@@ -1,0 +1,116 @@
+<%- include("../includes/head.ejs") %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    </head>
+
+    <body>
+        <header>
+            <nav>
+                <% if(isAuthenticated){ %>
+                    <ul>
+                        <li><a class="resim" href="/"><img src="/images/lunyoic.png" alt=""></a></li>
+                        <!-- <li><a class="<%= path==='/add-post' ? 'active' : '' %>" href="/add-post">Post
+                                ekle</a></li> -->
+
+                    </ul>
+                    <ul>
+                        <li><a class="resim" href="/profile/<%= authenticatedUser._id %>"><img class="avatar"
+                                    src="/<%= authenticatedUser.imageUrl %>" alt="userAvatar"></a></li>
+                        <form action="/logout" method="POST">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <button type="submit">Logout</button>
+                        </form>
+                    </ul>
+                    <% } else{ %>
+                        <ul>
+                            <li><a class="resim" href="/"><img src="/images/lunyoic.png" alt=""></a></li>
+                        </ul>
+                        <ul>
+                            <li><a class="<%= path==='/login' ? 'active' : '' %>" href="/login">Login</a>
+                            </li>
+                            <li><a class="<%= path==='/register' ? 'active' : '' %>" href="/register">Register</a></li>
+                        </ul>
+                        <% } %>
+            </nav>
+        </header>
+        <% if(posts.length> 0){ %>
+
+            <article class="grid-container">
+                <div class="userProfileInfos">
+                    <img class="bigAvatar" src="/<%= user.imageUrl %>">
+                    <p>Nickname:<%= user.nickname %>
+                    </p>
+                    <p>Number of Posts: <%= posts.length %>
+                    </p>
+                </div>
+                <h1>
+                    <%= user.nickname %>'s posts
+                </h1>
+                <% for(let post of posts){ %>
+                    <article class="grid-item">
+                        <div class="grid-item-header">
+                            <div class="user-info">
+                                <img class="avatar" src="/<%= user.imageUrl %>"><a href="">
+                                    <%= user.nickname %>
+                                </a>
+                            </div>
+                            <h1 class="title">
+                                <%= post.postId.title.charAt(0).toUpperCase() + post.postId.title.slice(1) %>
+                            </h1>
+                            <% if(isOwner){ %>
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" name="userId" value="<%= user._id %>">
+                                <input type="hidden" name="postId" value="<%= post.postId._id %>">
+                                <button type="button" onclick="deleteProduct(this)">
+                                    <i class="fa-solid fa-trash-can"></i></button>
+                                <% } %>
+                        </div>
+
+                        <div class="image"><img src="/<%= post.postId.imageUrl %>" alt=""></div>
+                        <div class="shortContent">
+                            <%= post.postId.content %>
+                        </div>
+                        <div class="postStats">
+                            <div class="likes">
+                                <% if(isAuthenticated){ %>
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                    <% if(likedPosts.includes(post.postId._id.toString())){ %>
+
+
+                                        <button onclick="changeLike(this)" type="submit" style="cursor: pointer;">
+                                            <i class="fa-solid fa-thumbs-up active">
+                                                <%= post.postId.likes %>
+                                            </i>
+                                        </button>
+                                        <% }else{%>
+
+                                            <button onclick="changeLike(this)" type="submit" style="cursor: pointer;">
+                                                <i class="fa-solid fa-thumbs-up">
+                                                    <%= post.postId.likes %>
+                                                </i>
+                                            </button>
+                                            <% } %>
+                                                <input type="hidden" name="userId"
+                                                    value="<%= authenticatedUser._id  %>">
+                                                <input type="hidden" name="postId" value="<%= post.postId._id  %>">
+                                                <%}else{%>
+                                                    <button type="submit" style="cursor: pointer;">
+                                                        <i class="fa-solid fa-thumbs-up">
+                                                            <%= post.postId.likes %>
+                                                        </i>
+                                                    </button>
+                                                    <%}%>
+                            </div>
+                            <div></div>
+                        </div>
+                    </article>
+
+
+                    <% } %>
+
+            </article>
+            <%}else{ %>
+                <h1>There is no post</h1>
+                <% } %>
+
+                    <%- include("../includes/end.ejs")%>
+                        <script src="/js/user.js"></script>

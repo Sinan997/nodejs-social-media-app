@@ -1,0 +1,77 @@
+.sign-in {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+h1 {
+    font-size: 3.5rem;
+    margin-bottom: 30px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+form input {
+    padding: 10px;
+    font-size: 1.2rem;
+    border: none;
+    border-bottom: solid 1px #000;
+    outline: none;
+}
+
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+input[type="text"]::placeholder,
+input[type="url"]::placeholder {
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+}
+
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+input[type="text"]::placeholder,
+input[type="url"]::placeholder {
+    color: #000;
+}
+
+input[type="submit"] {
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    border-radius: 15px;
+}
+
+input[type="submit"]:hover {
+    background-color: #eee;
+    color: #000;
+}
+
+a {
+    color: #424242;
+    text-decoration: none;
+    align-self: flex-end;
+}
+
+::selection {
+    color: #fff;
+    background-color: #000;
+}
+
+@media screen and (max-width: 786px) {
+    .image {
+        display: none;
+    }
+}

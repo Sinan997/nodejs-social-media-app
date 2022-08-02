@@ -1,0 +1,27 @@
+<header>
+    <nav>
+        <ul>
+            <li><a class="resim" href="/"><img src="/images/lunyoic.png" alt=""></a></li>
+            <input type="text" placeholder="Search...">
+        </ul>
+        <ul>
+            <li><a class="<%= path==='/' ? 'active' : '' %>" href="/">Home</a></li>
+            <% if(isAuthenticated){ %>
+                <li><a class="<%= path==='/add-post' ? 'active' : '' %>" href="/add-post">Post ekle</a></li>
+                <li><a class="resim" href="/profile/<%= user._id %>"><img class="avatar" src="/<%= user.imageUrl %>"
+                            alt="userAvatar"></a></li>
+                <li>
+                    <form action="/logout" method="POST">
+                        <button type="submit">Logout</button>
+
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    </form>
+                </li>
+
+                <% } else{ %>
+                    <li><a class="<%= path==='/login' ? 'active' : '' %>" href="/login">Login</a></li>
+                    <li><a class="<%= path==='/register' ? 'active' : '' %>" href="/register">Register</a></li>
+                    <% } %>
+        </ul>
+    </nav>
+</header>

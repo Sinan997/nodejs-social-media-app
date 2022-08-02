@@ -1,0 +1,128 @@
+<%- include("../includes/head.ejs") %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    </head>
+
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a class="resim" href="/"><img src="/images/lunyoic.png" alt=""></a></li>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <div class="wrapper">
+                        <div class="search-input">
+                            <input type="text" id="searchProfile" placeholder="type to search">
+                            <div class="autocom-box"></div>
+                            <div class="icon"><i class="fas fa-search"></i></div>
+                        </div>
+                    </div>
+                </ul>
+                <ul>
+                    <li><a class="<%= path==='/' ? 'active' : '' %>" href="/">Home</a></li>
+                    <% if(isAuthenticated){ %>
+                        <li><a class="<%= path==='/add-post' ? 'active' : '' %>" href="/add-post">Post ekle</a></li>
+                        <li><a class="resim" href="/profile/<%= user._id %>"><img class="avatar"
+                                    src="/<%= user.imageUrl %>" alt="userAvatar"></a></li>
+                        <li>
+                            <form action="/logout" method="POST">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <button type="submit">Logout</button>
+                            </form>
+                        </li>
+
+                        <% } else{ %>
+                            <li><a class="<%= path==='/login' ? 'active' : '' %>" href="/login">Login</a></li>
+                            <li><a class="<%= path==='/register' ? 'active' : '' %>" href="/register">Register</a></li>
+                            <% } %>
+                </ul>
+            </nav>
+        </header>
+        <% if(posts.length> 0){ %>
+            <article class="grid-container">
+                <% for(let post of posts){ %>
+
+                    <div class="grid-item">
+                        <div class="grid-item-header">
+                            <div class="user-info">
+                                <a href="/profile/<%= post.userId._id %>">
+                                    <img class="avatar" src="/<%= post.userId.imageUrl %>" alt="">
+                                </a>
+                                <a href="/profile/<%= post.userId._id %>">
+                                    <%= post.userId.nickname %>
+                                </a>
+                            </div>
+                            <h1 class="title">
+                                <%= post.title.charAt(0).toUpperCase() + post.title.slice(1)%>
+                            </h1>
+                        </div>
+                        <div class="image"><img src="/<%= post.imageUrl %>" alt=""></div>
+                        <div class="postStats">
+                            <div class="likes">
+                                <% if(isAuthenticated){ %>
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                    <% if(likedPosts.includes(post._id.toString())){ %>
+
+
+                                        <button onclick="changeLike(this)" type="submit" style="cursor: pointer;">
+                                            <i class="fa-solid fa-thumbs-up active">
+                                                <%= post.likes %>
+                                            </i>
+                                        </button>
+                                        <% }else{%>
+
+                                            <button onclick="changeLike(this)" type="submit" style="cursor: pointer;">
+                                                <i class="fa-solid fa-thumbs-up">
+                                                    <%= post.likes %>
+                                                </i>
+                                            </button>
+
+
+                                            <% } %>
+                                                <input type="hidden" name="userId" value="<%= user._id  %>">
+                                                <input type="hidden" name="postId" value="<%= post._id  %>">
+                                                <% } else{%>
+                                                    <button type="submit" style="cursor: pointer;">
+                                                        <i class="fa-solid fa-thumbs-up">
+                                                            <%= post.likes %>
+                                                        </i>
+                                                    </button>
+                                                    <%}%>
+
+                            </div>
+                        </div>
+                        <div class="shortContent">
+                            <%= post.content %>
+                        </div>
+                    </div>
+
+
+                    <% } %>
+
+            </article>
+            <section class="pagination">
+                <% if (currentPage !==1 && previousPage !==1){ %><a href="/?page=1">1</a>
+                    <% } %>
+                        <% if(hasPreviousPage) { %>
+                            <a href="/?page=<%= previousPage %>">
+                                <%= previousPage %>
+                            </a>
+                            <% } %>
+                                <a href="/?page=<%= currentPage %>" class="active">
+                                    <%= currentPage %>
+                                </a>
+                                <% if(hasNextPage) { %>
+                                    <a href="/?page=<%= nextPage %>">
+                                        <%= nextPage %>
+                                    </a>
+                                    <% } %>
+                                        <% if (lastPage !==currentPage && nextPage !==lastPage) { %>
+                                            <a href="/?page=<%= lastPage %>">
+                                                <%= lastPage %>
+                                            </a>
+                                            <% } %>
+            </section>
+            <%}else{ %>
+                <h1 style="text-align: center;">There is no post</h1>
+                <% } %>
+                    <%- include("../includes/end.ejs")%>
+                        <script src="/js/user.js"></script>

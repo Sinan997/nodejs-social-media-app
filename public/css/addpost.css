@@ -1,0 +1,40 @@
+form.addpost {
+    margin: 0 auto;
+    width: 400px;
+    font-size: 1.5rem;
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin-top: 1.5rem;
+    text-align: start;
+    margin-bottom: 0.4rem;
+}
+
+form input[type="text"],
+form input[type="url"] {
+    border-radius: 0.5rem;
+    height: 1.4rem;
+    outline: none;
+    padding: 0.8rem;
+}
+
+button {
+    margin-top: 1.5rem;
+    width: 7rem;
+    height: 2rem;
+    border-radius: 1rem;
+    transition: all 0.3s ease-in;
+    border: 1px solid #ccc;
+}
+
+button:hover {
+    cursor: pointer;
+    transform: scale(1.03);
+}
+
+nav ul li form button {
+    margin: 0;
+}
